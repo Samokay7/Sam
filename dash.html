@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    .box {
+        background-color: white;
+        box-shadow: 1px 1px 20px black;
+        width: 40%;
+        margin-left: 27%;
+        margin-top: 100px;
+        padding: 20px 40px;
+    }
+
+    .btn-cont {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .btn-cont button {
+        background-color: blue;
+        font-size: 16px;
+        padding: 10px;
+        width: 26%;
+        color: white;
+        border: none;
+        border-radius: 8px;
+
+    }
+
+    #subject {
+        /* display: none; */
+        margin-top: 20px;
+        width: 96%;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid black;
+        outline: none;
+    }
+
+    #content {
+        /* display: none; */
+        width: 96%;
+        padding: 8px;
+        border-radius: 5px;
+        /* height: 250px; */
+        padding-bottom: 200px;
+        border: 1px solid black;
+        outline: none;
+    }
+
+    .btn {
+        display: flex;
+        margin-top: 10px;
+        gap: 10px;
+    }
+
+    #post {
+        padding: 10px;
+        width: 25%;
+        margin-left: 10%;
+        background-color: blue;
+        border: none;
+        color: white;
+        font-family: Arial, Helvetica, sans-serif;
+        border-radius: 7px;
+    }
+
+    #clear {
+        padding: 10px;
+        width: 25%;
+        margin-left: 35%;
+        background-color: blue;
+        border: none;
+        color: white;
+        font-family: Arial, Helvetica, sans-serif;
+        border-radius: 7px;
+    }
+
+    #unlike {
+        display: none;
+    }
+
+    p {
+        font-weight: bold;
+        font-size: 20px;
+        font-family: cursive;
+        margin: 0;
+    }
+
+    .date {
+        font-size: 13px;
+        margin-left: 70px;
+    }
+
+    .obj {
+        margin-left: 40%;
+        font-size: 30px;
+    }
+
+    .aut {
+        margin-left: 40%;
+        font-size: 15px;
+    }
+
+    .line {
+        margin-top: -20px;
+    }
+
+    .word {
+        font-weight: normal;
+    }
+
+    /* .obj1{
+        margin-left: 42%;
+    } */
+    .btn {
+        display: flex;
+        margin-top: 30px;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .btn button {
+        padding: 13px;
+        width: 30%;
+        font-weight: bold;
+        border-radius: 4px;
+        border-radius: 1px soild black;
+        cursor: pointer;
+        border: none;
+    }
+
+    #delete:hover {
+        background-color: red;
+        color: white;
+        border: none;
+    }
+
+    .cont {
+        display: flex;
+        align-items: center;
+        text-align: center;
+    }
+</style>
+
+<body>
+    <div class="box">
+        <div>
+            <p id="para"></p>
+            <div class="btn-cont">
+                <button onclick="post()">post blog</button>
+                <button onclick="viewpost()">view all blog</button>
+                <button>view liked blog</button>
+            </div>
+        </div>
+        <div id="inpdiv">
+        </div>
+        <div id="listing"></div>
+
+    </div>
+</body>
+<script>
+    let subject;
+    let content;
+    let post1 = document.getElementById("post")
+    let clear = document.getElementById("clear")
+    let listing = document.getElementById("listing")
+    let para = document.getElementById("para")
+    let edit;
+    let unlike;
+    let arrone = (JSON.parse(localStorage.getItem("blogs"))) || []
+    console.log(arrone);
+    let arronelike =(JSON.parse(localStorage.getItem("userlike"))) || []
+    let result = JSON.parse(localStorage.getItem("loggedinfo"))
+    let i = 0;
+    let words;
+
+    para.innerHTML = `<p class="word">Welcome back ${result[0].firstname}</p> <br> <hr class="line"><br> `
+    const post = () => {
+        inpdiv.innerHTML = `<div">
+            <input type="text" placeholder="TILTLE" id="subject"><br><br>
+            <input type="text" name=" content" id="content"><br><br>
+            <button id="post" onclick="declear()">Post</button>
+            <button id="clear" onclick="clea()" >Clear</button>
+        </div>`
+        subject = document.getElementById("subject")
+        content = document.getElementById("content")
+    }
+
+    const declear = () => {
+        words = {
+            subject: subject.value,
+            content: content.value
+        }
+        arrone.push(words)
+        let newarrone = JSON.stringify(arrone)
+        localStorage.setItem("blogs", newarrone)
+        console.log(newarrone)
+        let date = new Date()
+        inpdiv.innerHTML = ""
+        for (i = 0; i < arrone.length; i++) {
+            inpdiv.innerHTML += `<div>
+                    <p class="obj">${arrone[i].subject}</p>
+                    <div class="cont"> <p class="obj1">${arrone[i].content}</p></div>
+                    <p class="aut">Author:${result[0].firstname}</p>
+                    <p class="date">${date}</p>
+                    <div class= "btn">
+                        <button id="edit" onclick="clicke(${i})">Like</button>
+                        <button id="unlike" onclick="unliked(${i})">Unlike</button>
+                        <button id="delete" onclick="del(${i})">Delete</button>
+                    </div>
+                </div>    
+            `
+        }
+    }
+    const viewpost = () => {
+        let date = new Date()
+        inpdiv.innerHTML = ""
+        for (i = 0; i < arrone.length; i++) {
+            inpdiv.innerHTML += `<div>
+                    <p class="obj">${arrone[i].subject}</p>
+                    <div class="cont"> <p class="obj1">${arrone[i].content}</p></div>
+                    <p class="aut">Author:${result[0].firstname}</p>
+                    <p class="date">${date}</p>
+                    <div class= "btn">
+                        <button id="edit" onclick="clicke(${i})">Like</button>
+                        <button id="unlike" onclick="unliked(${i})">Unlike</button>
+                        <button id="delete" onclick="del(${i})">Delete</button>
+                    </div>
+                </div>    
+            `
+        }
+    }
+
+    const del = (i) => {
+        arrone.splice(i, 1)
+        let newarrone = JSON.stringify(arrone)
+        localStorage.setItem("blogs", newarrone)
+        let date = new Date()
+        inpdiv.innerHTML = ""
+        for (i = 0; i < arrone.length; i++) {
+            inpdiv.innerHTML += `<div>
+                    <p class="obj">${arrone[i].subject}</p>
+                    <div class="cont"> <p class="obj1">${arrone[i].content}</p></div>
+                    <p class="aut">Author:${result[0].firstname}</p>
+                    <p class="date">${date}</p>
+                    <div class= "btn">
+                        <button id="edit" onclick="clicke(${i})">Like</button>
+                        <button id="unlike" onclick="unliked(${i})">Unlike</button>
+                        <button id="delete" onclick="del(${i})">Delete</button>
+                    </div>
+                </div>    
+            `
+        }
+    }
+    const clea = () => {
+        subject.value = ""
+        content.value = ""
+    }
+
+    function clicke(i){
+        edit = document.getElementById("edit")
+        unlike = document.getElementById("unlike")
+        edit.style.display = "none"
+        unlike.style.display = "block"
+        
+        
+    }
+
+    function unliked(i){
+        edit = document.getElementById("edit")
+        unlike = document.getElementById("unlike")
+        edit.style.display = "block"
+        unlike.style.display = "none"
+    }
+</script>
+
+</html>

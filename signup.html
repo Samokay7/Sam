@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="icofont/icofont.min.css">
+    <title>Document</title>
+</head>
+<style>
+    div input {
+        display: flex;
+        padding: 10px;
+        /* gap: 10px; */
+    }
+
+    body {
+        background-image: url(grunge-paint-background.jpg);
+    }
+
+    div {
+        background-color: rgba(255, 255, 255, 0.288);
+        width: 20%;
+        padding: 30px 40px;
+        border-radius: 10px;
+        margin-left: 36%;
+        margin-top: 100px;
+        box-shadow: 1px 2px 20px black;
+    }
+
+    input {
+        background: none;
+        color: #080808;
+        font-weight: bold;
+        width: 90%;
+        border: none;
+        border-bottom: 1px solid #080808;
+        outline: none;
+    }
+
+
+
+    /* ::placeholder{
+        color: rgb(5, 5, 5);
+        font-weight: bold;
+    } */
+    #btnhide {
+        display: none;
+        background:none;
+        height: fit-content;
+        color: white;
+        border: none;
+        border-radius: 5px;
+    }
+
+    #btnhid {
+        display: none;
+        display: none;
+        background:none;
+        height: fit-content;
+        color: white;
+        border: none;
+        border-radius: 5px;
+    }
+
+    p {
+        font-weight: bold;
+        font-size: 25px;
+        margin-left: 36%;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    main {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .submit {
+        color: white;
+        background-color: rgba(0, 0, 0, 0.466);
+        border: none;
+        width: 100%;
+        border-radius: 4px;
+        padding: 10px;
+        box-shadow: 1px 2px 20px rgb(59, 59, 59);
+        cursor: pointer;
+    }
+    input:hover{
+        border-bottom: 1px solid #3f3dc4;
+    }
+    .icofont-eye-blocked{
+        color: #3b3a3a;
+        font-size: 20px;
+    }
+    #btnshow{
+        background: none;
+        border: none;
+    }
+    #btnsho{
+        background: none;
+        border: none;
+    }
+    .icofont-eye-alt{
+        color: #5c5b5b;
+        font-size: 20px;
+    }
+    .log{
+        font-size: 16px;
+        margin-left:7px;
+    }
+</style>
+
+<body>
+    <div>
+        <form action="">
+            <p>Signup</p>
+            <input type="text" placeholder="firstname" id="fname" required> <br>
+            <input type="text" placeholder="secondname" id="sname" required> <br>
+            <input type="email" placeholder="Email" id="email" required> <br>
+            <main>
+                <input type="text" placeholder="password" id="pass" required> <button onclick="show()"
+                    id="btnshow"><i class="icofont-eye-alt"></i></button><button onclick="hid()" id="btnhide"><i class="icofont-eye-blocked"></i></button> <br>
+            </main><br>
+            <main>
+                <input type="text" placeholder="Confirm password" id="conpass" required><button onclick="tet()"
+                    id="btnsho"><i class="icofont-eye-alt"></i></button><button onclick="hid2()" id="btnhid"><i class="icofont-eye-blocked"></i></button><br>
+            </main><br>
+            <button type="submit" onclick="savedinfo(event)" class="submit">Register</button>
+        </form>
+        <p class="log"><a href="login.html">Login</a></p>
+    </div>
+</body>
+<script>
+    let fname = document.getElementById("fname")
+    let sname = document.getElementById("sname")
+    let email = document.getElementById("email")
+    let pass = document.getElementById("pass")
+    let conpass = document.getElementById("conpass")
+    let arrone = (JSON.parse(localStorage.getItem("userinfo"))) || []
+    console.log(arrone);
+
+
+
+    const savedinfo = (ev) => {
+        ev.preventDefault()
+        let infomation = {
+            firstname: fname.value,
+            secondname: sname.value,
+            Email: email.value,
+            password: pass.value,
+            confirmpassword: conpass.value
+        }
+        arrone.push(infomation)
+        let newarrone = JSON.stringify(arrone)
+        localStorage.setItem("userinfo", newarrone)
+        if(fname.value == "" || sname.value == "" ||email.value == "" || pass.value == "" ||conpass.value == ""){
+            alert("fill up your details")
+        }
+        else if (pass.value != conpass.value) {
+            alert("password does not match")
+        } else {
+            window.location.href = "login.html"
+        }
+    }
+
+    const show = () => {
+        pass.type = "text"
+        btnshow.style.display = "none"
+        btnhide.style.display = "block"
+    }
+
+    const tet = () => {
+        conpass.type = "text"
+        btnsho.style.display = "none"
+        btnhid.style.display = "block"
+    }
+
+    const hid = () => {
+        pass.type = "password"
+        btnshow.style.display = "block"
+        btnhide.style.display = "none"
+    }
+    const hid2 = () => {
+        conpass.type = "password"
+        btnsho.style.display = "block"
+        btnhid.style.display = "none"
+    }
+</script>
+
+</html>
